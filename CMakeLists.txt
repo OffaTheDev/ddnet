@@ -2660,6 +2660,8 @@ if(CLIENT)
     components/console.h
     components/controls.cpp
     components/controls.h
+    components/freeze_assist.cpp
+    components/freeze_assist.h
     components/countryflags.cpp
     components/countryflags.h
     components/damageind.cpp

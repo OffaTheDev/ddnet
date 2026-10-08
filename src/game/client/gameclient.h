@@ -36,6 +36,7 @@
 #include "components/chat.h"
 #include "components/console.h"
 #include "components/controls.h"
+#include "components/freeze_assist.h"
 #include "components/countryflags.h"
 #include "components/damageind.h"
 #include "components/debughud.h"
@@ -169,6 +170,7 @@ public:
 	CImportantAlert m_ImportantAlert;
 	CDebugHud m_DebugHud;
 	CControls m_Controls;
+	CFreezeAssist m_FreezeAssist;
 	CEffects m_Effects;
 	CScoreboard m_Scoreboard;
 	CStatboard m_Statboard;

@@ -128,6 +128,7 @@ void CGameClient::OnConsoleInit()
 					      &m_Binds,
 					      &m_Binds.m_SpecialBinds,
 					      &m_Controls,
+					      &m_FreezeAssist,
 					      &m_Camera,
 					      &m_Sounds,
 					      &m_Voting,

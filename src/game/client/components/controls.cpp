@@ -371,6 +371,15 @@ int CControls::SnapInput(int *pData)
 		Send = Send || (GameClient()->m_Snap.m_pLocalCharacter && GameClient()->m_Snap.m_pLocalCharacter->m_Weapon == WEAPON_NINJA && (m_aInputData[g_Config.m_ClDummy].m_Direction || m_aInputData[g_Config.m_ClDummy].m_Jump || m_aInputData[g_Config.m_ClDummy].m_Hook));
 	}
 
+	// The packet is derived from the raw input; m_aInputData / m_aLastData keep the player's own intent.
+	// The filtered input is what ends up in CClient::m_aInputs, so prediction and server see the exact same input.
+	CNetObj_PlayerInput SendData = m_aInputData[g_Config.m_ClDummy];
+	if(SendData.m_PlayerFlags & PLAYERFLAG_PLAYING)
+	{
+		GameClient()->m_FreezeAssist.FilterInput(g_Config.m_ClDummy, &SendData);
+		Send = Send || GameClient()->m_FreezeAssist.DiffersFromLastSent(g_Config.m_ClDummy, SendData);
+	}
+
 	// copy and return size
 	m_aLastData[g_Config.m_ClDummy] = m_aInputData[g_Config.m_ClDummy];
 
@@ -378,8 +387,9 @@ int CControls::SnapInput(int *pData)
 		return 0;
 
 	m_LastSendTime = time_get();
-	mem_copy(pData, &m_aInputData[g_Config.m_ClDummy], sizeof(m_aInputData[0]));
-	return sizeof(m_aInputData[0]);
+	GameClient()->m_FreezeAssist.NoteSent(g_Config.m_ClDummy, SendData);
+	mem_copy(pData, &SendData, sizeof(SendData));
+	return sizeof(SendData);
 }
 
 void CControls::OnRender()
